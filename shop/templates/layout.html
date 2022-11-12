@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css')}}">
+
+    <title>{{title}}</title>
+  </head>
+  <body>
+    {% block content %}
+    
+   {%endblock content%}
+    <div class="container mt-4">
+        <footer class="page_footer font-small bg-light">
+           <div class="footer-copyright text-center py-3">
+               2022 Created and Designed by Surya:
+
+           </div>
+        </footer>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{ url_for('static',filename='js/jquery-3.3.1.slim.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/popper.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='/js/bootstrap.min.js')}}"></script>
+  </body>
+</html>

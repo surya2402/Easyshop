@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container mt-4">
+     {% include 'message.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            Invoice: {{orders.invoice}}
+            <br>
+            Status: {{orders.status}}
+            <br>
+            Customer name: {{customer.name}}
+            <br>
+            Customer email: {{customer.email}}
+            <br>
+            Customer contact: {{customer.contact}}
+            <br>
+            <br>
+             <table class="table table-sm table-hover " >
+            <thead class="thead-dark">
+                <th>Sr</th>
+
+                <th>Name</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Subtotal</th>
+
+            </thead>
+               <tbody>
+               {% for key, product in orders.orders.items() %}
+                {% set discount =(product.discount/100) * product.price|float %}
+               <tr>
+                   <td>{{loop.index}}</td>
+                    <td>{{product.name}}</td>
+                    <form action="{{url_for('updatecart', code=key)}}" method="post">
+                    <td>
+                        {{product.color|capitalize}}
+                    </td>
+                    <td>{{"%.2f"|format(product.price)}}rs</td>
+                    <td> {{product.quantity}} </td>
+                    {% if product.discount  %}
+                    <td>{{"%.2f"|format(discount)}}rs</td>
+                    {% else %}
+                    <td>0rs</td>
+                    {% endif %}
+                    {% set subtotal = product.quantity|int * product.price|float  %}
+                    <td>{{"%.2f"|format(subtotal - (product.quantity|float)*discount|round(1,'floor')) }} rs</td>
+                </form>
+               </tr>
+               {% endfor %}
+               </tbody>
+             </table>
+            <table class="table table-sm">
+           <tr>
+
+
+
+            </td>
+           </tr>
+            </table>
+
+            <table class="float-right">
+                <tbody>
+                <tr>
+                    <th scope="row">Total Price:</th>
+                    <td> {{subtotal}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Tax(2%) :</th>
+                    <td> {{tax}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Grand Total</th>
+                    <td> {{grandtotal}}</td>
+                </tr>
+                </tbody>
+
+            </table>
+
+
+               <table class="">
+                   <tr>
+
+               <td> <form action="{{url_for('get_pdf', invoice=orders.invoice)}}" method="post" class="float-right">
+                        <button type="submit" class="btn btn-danger"> Download Invoice</button>
+                    </form>
+                   </td>
+                       <td>
+               <a href="{{url_for('home')}}" class="btn btn-success ml-2"> Continue Shopping </a></td>
+                </tr>
+                   </table>
+
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container mt-4">
+     {% include 'message.html' %}
+    <div class="row">
+        <div class="col-md-12">
+             <table class="table table-sm table-hover " >
+            <thead class="thead-dark">
+                <th>Sr</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Subtotal</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </thead>
+               <tbody>
+               {% for key, product in session['Shoppingcart'].items() %}
+                {% set discount =(product.discount/100) * product.price|float %}
+               <tr>
+                   <td>{{loop.index}}</td>
+                    <td><img src="{{url_for('static',filename='images/'+ product.image)}}" alt="{{product.name}}" width="45" height="40"></td>
+                    <td>{{product.name}}</td>
+                    <form action="{{url_for('updatecart', code=key)}}" method="post">
+                    <td>
+                        {% set colors = product.colors.split(',') %}
+                        <label for="colors">Color: </label>
+                        <select name="color" id="color">
+                            <option value="{{product.color}}" style="display: none;">{{product.color|capitalize}}</option>
+                            {% for color in colors %}
+                            {% set col = color.split(':') %}
+                            <option value="{{col[0]}}" style="color:{{col[0]}}">{{col[0] | capitalize }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </td>
+                    <td>{{"%.2f"|format(product.price)}}rs</td>
+                    <td> <input type="number" name="quantity" min="1" max="10" value="{{product.quantity}}"> </td>
+                    {% if product.discount  %}
+                    <td>{{"%.2f"|format(discount)}}rs</td>
+                    {% else %}
+                    <td>No Discount</td>
+                    {% endif %}
+                    {% set subtotal = product.quantity|int * product.price|float  %}
+                    <td>{{"%.2f"|format(subtotal - (product.quantity|float)*discount|round(1,'floor')) }} rs</td>
+                    <td><button type="submit" class="btn btn-sm btn-info">Update</button> </td>
+                </form>
+                    <td> <a href="{{url_for('deleteitem', id=key)}}" class="btn btn-sm btn-danger">Remove</a></td>
+               </tr>
+               {% endfor %}
+               </tbody>
+             </table>
+            <table class="float-right">
+                <tbody>
+                <tr>
+                    <th scope="row">Total Price:</th>
+                    <td> {{subtotal}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Tax(2%) :</th>
+                    <td> {{tax}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Grand Total</th>
+                    <td> {{grandtotal}}</td>
+                </tr>
+                </tbody>
+
+            </table>
+
+
+               <table class="">
+                   <tr>
+               <td> <a href="{{url_for('get_order')}}" class="btn btn-success btn-sm"> Check out  </a> </td>
+               <td> <a href="{{url_for('clearcart')}}" class="btn btn-danger btn-sm float-right mr-4"> Clear cart</a> </td>
+                </tr>
+                   </table>
+
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

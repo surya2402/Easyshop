@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <nav class="navbar navbar-expand-lg bg-dark ">
+  <a class="navbar-brand" href="{{url_for('admin')}}" style="color: Red"><b>Admin</b></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{url_for('admin')}}">Home <span class="sr-only">(current)</span></a>
+      </li>
+     <li class="nav-item">
+        <a class="nav-link" href="{{url_for('brands')}}">Brands</a>
+      </li>
+         <li class="nav-item">
+              <a class="nav-link" href="{{url_for('category')}}">Categories</a>
+            </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#FFA500">
+          Add
+        </a>
+       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="{{url_for('addproduct')}}">Add product</a>
+                <a class="dropdown-item" href="{{url_for('addbrand')}}">Add Brand</a>
+                <a class="dropdown-item" href="{{url_for('addcat')}}">Add Category</a>
+              </div>
+
+      </li>
+
+    </ul>
+
+  </div>
+</nav>
+</div>
+<div class="container">
+     <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+
+          {% if updatebrand %}
+          {% include "message.html" %}
+          <h1 class="text-center mt-5">Update The Brand</h1>
+          <form action="" method="POST" >
+               <input type="text" name="brand" class="form-control" value="{{updatebrand.name}}">
+               <input type="submit" value="Update" class="btn btn-info mt-3">
+
+          </form>
+           <a href="{{url_for('brands')}}" class="btn btn-warning" style="margin-top: -65px; margin-left:156px;">Go Back</a>
+
+          {% else %}
+          <h1 class="text-center mt-5">Update Category</h1>
+          <form action="" method="POST">
+               <input type="text" name="category" class="form-control" value="{{updatecat.name}}" required>
+               <input type="submit" value="Update" class="btn btn-info mt-2">
+
+          </form>
+                          <a href="{{url_for('category')}}" class="btn btn-warning" style="margin-top: -65px; margin-left:100px;">Go Back</a>
+
+          {% endif %}
+      </div>
+<div class="col-md-3"></div>
+     </div>
+</div>
+{% endblock content %}
